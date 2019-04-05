@@ -1,0 +1,28 @@
+section.background style='background-image: url(#{image_path('main-back.png')})'
+  .box
+    h1
+      | Your primary field concern?
+
+    p You may have multiple concerns about your current field condition but pick the one that is most prevalent.
+    form action='/quiz_four' method='get'
+      .page
+        .hide
+          input type='text' name='title' value='#{params[:title]}'
+          input type='text' name='sport' value='#{params[:sport]}'
+        .input
+          input type='radio' name='concern' value='Standing Water'
+          p Standing Water
+        .input
+          input type='radio' name='concern' value='Dead Spots'
+          p Dead Spots
+        .input
+          input type='radio' name='concern' value='Unwanted Weeds'
+          p Unwanted Weeds
+        .input
+          input type='radio' id='other_option' name='concern' value='other' data-checked='no'
+          p Other
+        button#form-submit.hide
+    button#visible-button NEXT
+
+= render 'shared/option_js'
+= render 'shared/quiz_styles'

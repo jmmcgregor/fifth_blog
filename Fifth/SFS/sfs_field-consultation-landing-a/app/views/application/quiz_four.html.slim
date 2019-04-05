@@ -1,0 +1,29 @@
+section.background style='background-image: url(#{image_path('main-back.png')})'
+  .box
+    h1
+      | When did it first start?
+
+    p Knowing when the #{params[:concern].downcase} first showed up on your #{params[:sport].downcase} field gives us insight into the depth and breadth of your current field needs.
+    form action='/quiz_results' method='get'
+      .page
+        .hide
+          input type='text' name='title' value='#{params[:title]}'
+          input type='text' name='sport' value='#{params[:sport]}'
+          input type='text' name='concern' value='#{params[:concern]}'
+        .input
+          input type='radio' name='time' value='1 week'
+          p 1 Week
+        .input
+          input type='radio' name='time' value='1 month'
+          p 1 Month
+        .input
+          input type='radio' name='time' value='6 months'
+          p 6 Months
+        .input
+          input type='radio' id='other_option' name='time' value='other' data-checked='no'
+          p Other
+        button#form-submit.hide
+    button#visible-button NEXT
+
+= render 'shared/option_js'
+= render 'shared/quiz_styles'

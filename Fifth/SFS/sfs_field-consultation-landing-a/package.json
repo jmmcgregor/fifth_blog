@@ -1,0 +1,7 @@
+{
+  "name": "A",
+  "private": true,
+  "dependencies": {
+    "node-bandwidth": "^2.6.5"
+  }
+}

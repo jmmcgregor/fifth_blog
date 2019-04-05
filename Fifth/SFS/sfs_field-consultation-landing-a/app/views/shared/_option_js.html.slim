@@ -1,0 +1,103 @@
+javascript:
+  window.onload = function(){
+
+    // --------------------- Other ----------------------
+    document.getElementById('other_option').addEventListener('click',inputMod)
+    document.getElementById('visible-button').addEventListener('click',submitForm)
+
+    var inputs = document.getElementsByClassName('input')
+    for(var i = 0; i < inputs.length - 1; i++){
+      inputs[i].addEventListener('click',otherBack)
+    }
+  }
+
+  function inputMod(){
+    this.type = 'text'
+    this.value = ''
+    this.style.color = 'black'
+    this.placeholder = 'Enter option here'
+    this.nextElementSibling.innerHTML = ''
+    this.dataset.checked = 'yes'
+    this.classList.add('other-option-checked')
+  }
+
+  function otherBack(){
+    var ot = document.getElementById('other_option')
+    if(ot.dataset.checked == 'yes'){
+      ot.type = 'radio'
+      ot.style.color = 'white'
+      ot.nextElementSibling.innerHTML = 'Other'
+      ot.dataset.checked = 'no'
+      ot.classList.remove('other-option-checked')
+    }
+    this.firstElementChild.checked = true
+  }
+
+  function submitForm(){
+    if(document.getElementById('facebook') !== null){
+      facebookTracker()
+    }
+    var checked = false;
+    var r = document.getElementsByTagName('input')
+    for(var i = 0; i < r.length; i++){
+      if(r[i].checked){
+        checked = true;
+        debugger
+      }
+    }
+    if(checked == true){
+      updateUTM(checkVal())
+      document.getElementById('form-submit').click()
+    }
+    else{
+      alert('Please make a selection')
+    }
+  }
+
+  function checkVal(){
+    var inputs = document.getElementsByTagName('input')
+    for(i=0;i<inputs.length;i++){
+      if(inputs[i].checked == true){
+        return inputs[i].value
+      }
+    }
+  }
+
+  function updateUTM(checkVal){
+    var inputs = document.getElementsByTagName('input')
+    var t_inputs = ''
+    for(i=0;i<inputs.length;i++){
+      if(inputs[i].type == 'text' && inputs[i].value == ''){
+        t_inputs = inputs[i]
+        checkVal = checkVal.toLowerCase()
+        checkVal = checkVal.replace(/ /g,'-')
+        t_inputs.value = checkVal
+      }
+    }
+  }
+
+  function facebookTracker(){
+    var inputs = document.getElementsByTagName('input')
+    if(inputs.length == 6){
+      for(i=0;i<inputs.length;i++){
+        if(inputs[i].checked == true && inputs[i].value != 'Coach'){
+          var chosenButton = inputs[i].value.replace(/ /g,'')
+          fbq('trackCustom', chosenButton)
+        }
+      }
+    }
+    else if(inputs.length == 8){
+      for(i=0;i<inputs.length;i++){
+        if(inputs[i].value == 'Coach'){
+          var coach = 'Coach'
+          var check = true
+        }
+      }
+      for(i=0;i<inputs.length;i++){
+        if(inputs[i].checked == true && check){
+          var sport = inputs[i].value
+          fbq('trackCustom', coach + sport)
+        }
+      }
+    }
+  }

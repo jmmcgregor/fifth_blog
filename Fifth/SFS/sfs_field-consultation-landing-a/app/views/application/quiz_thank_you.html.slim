@@ -1,0 +1,18 @@
+section.background style='background-image: url(#{image_path('main-back.png')})'
+  .box style='justify-content:space-around'
+    .boxfill style='flex:2'
+    h1
+      | Thank you
+      br
+      span for reaching out!
+    p
+      ' A Sports Field Solutions expert will be in touch promptly. In the meantime, check out our
+      a href="https://www.sportsfieldsolutions.com/blog" learning center
+      ' &nbspfor more tips on getting your field into tip-top shape.
+    .boxfill style='flex:2'
+
+= render 'shared/quiz_styles'
+javascript:
+  window.onload = function(){
+    fbq('trackCustom', 'LeadFieldConsultation')
+  }

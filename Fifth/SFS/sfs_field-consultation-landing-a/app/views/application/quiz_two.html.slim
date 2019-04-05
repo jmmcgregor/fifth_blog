@@ -1,0 +1,31 @@
+section.background style='background-image: url(#{image_path('main-back.png')})'
+  .box
+    h1
+      | Which field type?
+
+    p Each field type has unique characteristics and challenges.
+    #facebook data-track='yes' style='display:none'
+    form action='/quiz_three' method='get'
+      .page
+        .hide
+          input id='utm_campaign' type='text' name='utm_campaign' value='free-field-consultation'
+          input id='utm_source' type='text' name='utm_source' value='#{params[:utm_source]}'
+          input id='utm_medium' type='text' name='utm_medium' value=''
+          input type='text' name='title' value='#{params[:title]}'
+        .input
+          input type='radio' name='sport' value='Football'
+          p Football
+        .input
+          input type='radio' name='sport' value='Baseball'
+          p Baseball
+        .input
+          input type='radio' name='sport' value='Soccer'
+          p Soccer
+        .input
+          input type='radio' id='other_option' name='sport' value='other' data-checked='no'
+          p Other
+        button#form-submit.hide
+    button#visible-button NEXT
+
+= render 'shared/option_js'
+= render 'shared/quiz_styles'

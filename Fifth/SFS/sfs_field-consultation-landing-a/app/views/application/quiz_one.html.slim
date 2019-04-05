@@ -1,0 +1,29 @@
+section.background style='background-image: url(#{image_path('main-back.png')})'
+  .box
+    h1
+      | What is your title?
+
+    p Each field is very unique. Help us qualify your field for a free field consulation by answering a few questions.
+    #facebook data-track='yes' style='display:none'
+    form action='/quiz_two' method='get' data-current='1'
+      .page data-page='1'
+        .hide
+          input id='utm_campaign' type='text' name='utm_campaign' value='free-field-consultation'
+          input id='utm_source' type='text' name='utm_source' value=''
+        .input
+          input type='radio' name='title' value='Athletic Director'
+          p Athletic Director
+        .input
+          input type='radio' name='title' value='Coach'
+          p Coach
+        .input
+          input type='radio' name='title' value='Parks Manager'
+          p Parks Manager
+        .input
+          input type='radio' id='other_option' name='title' value='other' data-checked='no'
+          p Other
+        button#form-submit.hide
+    button#visible-button NEXT
+
+= render 'shared/option_js'
+= render 'shared/quiz_styles'

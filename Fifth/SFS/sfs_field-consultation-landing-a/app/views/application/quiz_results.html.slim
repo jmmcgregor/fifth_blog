@@ -1,0 +1,19 @@
+section.background style='background-image: url(#{image_path('main-back.png')})'
+  .box
+    h1
+      | FREE
+      br
+      span Field Consultation
+    p Seeing #{params[:concern].downcase} for #{params[:time].downcase}, qualifies you for a free field consulation. Enter your information below and we will help you figure out how you can get your field back into optimum playing condition.
+
+    = render 'shared/form'
+    button#visible-button SUBMIT
+
+= render 'shared/quiz_styles'
+
+javascript:
+  document.getElementById('visible-button').addEventListener('click',submitForm)
+
+  function submitForm(){
+    document.getElementById('_form_6_submit').click()
+  }
