@@ -1,0 +1,55 @@
+<h1>FIND YOUR NAME AND CONTINUE</h1>
+<p id="store-name" style="display: none;"><%= @params['store_name'] %></p>
+<p id="store-address" style="display: none;"><%= @params['store_address'] %></p>
+
+
+<select id="sampler-name">
+  <option value="choose-one">Choose one...</option>
+  <option value="T-Bate">T-Bate</option>
+  <option value="Big-Ben">Big Ben</option>
+</select>
+<button onclick="continue_process()">CONTINUE</button>
+
+
+<script>
+  function continue_process() {
+    var sampler = document.getElementById("sampler-name").value;
+    if(sampler != "choose-one") {
+
+      var store_name = document.getElementById("store-name").innerHTML;
+      var store_address = document.getElementById("store-address").innerHTML;
+
+      window.open("https://77c6a0ba.ngrok.io/" + "sampler-form?sampler=" + sampler + "&store_name=" + store_name + "&store_address=" + store_address, "_blank");
+    }
+    else {
+      alert("ERROR: Find your name and continue");
+    }
+
+  }
+</script>
+<style>
+  html {
+    height: 100%;
+  }
+  body {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  select {
+    height: 75px;
+    width: 100%;
+    font-size: 36px;
+    text-align-last: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+  button {
+    height: 55px;
+    width: 25%;
+    font-size: 36px;
+  }
+</style>

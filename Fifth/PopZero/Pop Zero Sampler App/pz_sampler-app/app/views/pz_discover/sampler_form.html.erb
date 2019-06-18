@@ -1,0 +1,750 @@
+
+<!-- <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSctX1hqmZpYXhWbsmijCsHYDkDDanmM7MFQC8-SX1XkrXQ34Q/viewform?embedded=true" width="640" height="1537" frameborder="0" marginheight="0" marginwidth="0" id="iframe-form">Loading...</iframe> -->
+<div id="lime-scale-container">
+  <div id="lime-load-cover" class="load-container">
+    <div id="lime-loader" class="loader">
+    </div>
+  </div>
+  <div id="lime-scale">
+    <div class="slidecontainer">
+      <h1 class="slider-title">How Good is it?</h1>
+      <div id="lime-value">5</div>
+      <div class="scale-markers">
+        <p class="min">Meh...</p>
+        <p class="max">Stupid Good</p>
+      </div>
+      <input type="range" min="0" max="10" value="5" class="slider" id="myRange">
+    </div>
+    <div class="slidecontainer" id="slidecontainer-second">
+      <h1 class="slider-title">More or Less Lime?</h1>
+      <div id="second-lime-value">5</div>
+      <div class="scale-markers">
+        <p class="min">Less Lime</p>
+        <p class="max">More Lime</p>
+      </div>
+      <input type="range" min="0" max="10" value="5" class="slider" id="myRange-second">
+    </div>
+    <div id="button-container-lime">
+      <button onclick="handleSignInClick('lime')">Submit</button>
+    </div>
+  </div>
+</div>
+<div id="form-container">
+  <div id="form-loader-container" class="load-container">
+    <div id="form-loader" class="loader">
+    </div>
+  </div>
+  <form>
+    <div class="flx-col ">
+      <div class="input-container not-seen">
+        <span>Sampler:</span><input id="sampler" type="text" name="fullName" value="<%= @params['sampler'] %>" disabled>
+      </div>
+      <div class="input-container not-seen">
+        <span>Store:</span> <input id="store-name" type="text" name="fullAddress" value="<%= @params['store_name'] %>" disabled>
+      </div>
+    </div>
+    <div class="flx-col">
+      <div class="input-container not-seen">
+        <span>Store Address:</span> <input id="store-address" type="text" name="fullAddress" value="<%= @params['store_address'] %>" disabled>
+      </div>
+
+      <div class="input-container">
+        <span>Where did you hear about Pop Zero?</span>
+
+        <select name="source" id="exposure-source">
+          <optgroup>
+            <option class="option-dropdown" value="choose" selected="selected">Choose One...</option>
+            <option value="facebook">Facebook</option>
+            <option value="instagram">Instagram</option>
+            <option value="friend">Friend</option>
+            <option value="tech-company">Tech Company</option>
+            <option value="in-store">In Store</option>
+            <option value="other">Other</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+  <span id="who-text">Who?</span>
+  <!-- <select name="from-who" id="who-was-it">
+    <optgroup>
+      <option value="choose">Choose One...</option>
+      <option value="friend">Friend</option>
+      <option value="ad">Ad</option>
+      <option value="influencer">Influencer</option>
+    </optgroup>
+  </select> -->
+  <div class="input-container">
+    <input class="white-background" id="fb-name-of-person" type="text" name="fb-fullName" placeholder="Facebook Friend / Facebook Page...">
+  </div>
+  <div class="input-container">
+    <input class="white-background" id="insta-person" type="text" name="insta-fullName" placeholder="@instagram_handle...">
+  </div>
+  <div class="flx-col">
+    <div class="input-container">
+      <span id="which-company-text">Which Company?</span>
+      <input id="tech-company" type="text" name="tc-fullName" placeholder="Tech Company Name...">
+    </div>
+  </div>
+  <div class="input-container">
+    <input id="other-option" type="text" name="other" placeholder="Other">
+  </div>
+  </form>
+  <div id="button-container">
+    <button onclick="handleSignInClick('none')">SUBMIT</button>
+  </div>
+</div>
+
+<script>
+window.addEventListener('load', function(){
+
+  var select = document.getElementById('exposure-source');
+  select.addEventListener('change', selectChanged, false);
+  var sampler = document.getElementById("sampler").value;
+  hide_all();
+  var lime_slider = document.getElementById("myRange");
+  lime_slider.addEventListener('change', show_lime_bar)
+});
+function show_lime_bar() {
+  var lime_slider = document.getElementById("myRange");
+  var lime_val = lime_slider.value;
+  if(lime_val <= 6) {
+    display_second_lime_bar();
+  }
+  else {
+    hide_second_lime_bar();
+  }
+}
+
+function display_second_lime_bar() {
+  var second_slider = document.getElementById('slidecontainer-second');
+  second_slider.style.display = "block";
+}
+
+function hide_second_lime_bar() {
+  var second_slider = document.getElementById('slidecontainer-second');
+  second_slider.style.display = "none";
+}
+
+function hide_all() {
+
+  // var who = document.getElementById('who-was-it');
+  var fb_person = document.getElementById('fb-name-of-person');
+  var insta_person = document.getElementById('insta-person');
+  var tech_company = document.getElementById('tech-company');
+  var other = document.getElementById('other-option');
+  var who_text = document.getElementById('who-text');
+  var which_company_text = document.getElementById('which-company-text');
+  var submit_button = document.getElementById("button-container");
+
+
+  fb_person.style.display="none";
+  insta_person.style.display="none";
+  tech_company.style.display="none";
+  other.style.display="none";
+  who_text.style.display="none";
+  which_company_text.style.display = "none";
+  submit_button.style.display = "none";
+
+
+}
+
+function selectChanged() {
+
+  hide_all();
+
+  var select = document.getElementById('exposure-source');
+  var select_value = select.value;
+  // var who = document.getElementById('who-was-it');
+  var fb_person = document.getElementById('fb-name-of-person');
+  var insta_person = document.getElementById('insta-person');
+  var tech_company = document.getElementById('tech-company');
+  var other = document.getElementById('other-option');
+  var who_text = document.getElementById('who-text');
+  var which_company_text = document.getElementById('which-company-text');
+  var submit_button = document.getElementById("button-container");
+
+  submit_button.style.display = "flex";
+
+
+  if(select_value == 'facebook') {
+    select.style.background="lightgray";
+    fb_person.style.display="block";
+
+    who_text.style.display="block";
+    document.getElementById("fb-name-of-person").style.background="white";
+  }
+  else if(select_value == 'instagram') {
+    select.style.background="lightgray";
+    insta_person.style.display="block";
+
+    who_text.style.display="block";
+    document.getElementById("insta-person").style.background="white";
+  }
+  else if(select_value == 'tech-company') {
+    select.style.background="lightgray";
+    tech_company.style.display="block";
+    which_company_text.style.display="block";
+    document.getElementById("tech-company").style.background="white";
+
+  }
+  else if(select_value == 'friend') {
+    select.style.background="lightgray";
+  }
+  else if(select_value == 'other') {
+    select.style.background="lightgray";
+    other.style.display="block";
+    document.getElementById("other-option").style.background="white";
+  }
+  else if(select_value == 'in-store') {
+    select.style.background="lightgray";
+  }
+  else {
+    select.style.background="white";
+    submit_button.style.display = "none";
+  }
+
+}
+
+</script>
+<script>
+
+  var results = {};
+  var authorizeButton = document.getElementById('authorize_button');
+  var signoutButton = document.getElementById('signout_button');
+  var endDate;
+  var signedIn = false;
+  window.addEventListener('load', function(){
+    gapi.auth2.getAuthInstance().signIn();
+  });
+  function handleSignInClick(source) {
+    // Ideally the button should only show up after gapi.client.init finishes, so that this
+    // handler won't be called before OAuth is initialized.
+    var loader;
+    if(source == "lime") {
+      loader = document.getElementById("lime-load-cover");
+      loader.style.opacity = "1";
+      setTimeout(makeApiCall.bind(null, source), 1000);
+
+    }
+    else {
+      loader = document.getElementById("form-loader-container");
+      loader.style.opacity = "1";
+      setTimeout(makeApiCall.bind(null, source), 1000);
+
+    }
+
+  }
+
+  function handleClientLoad() {
+    // Loads the client library and the auth2 library together for efficiency.
+    // Loading the auth2 library is optional here since `gapi.client.init` function will load
+    // it if not already loaded. Loading it upfront can save one network request.
+
+    gapi.load('client:auth2', initClient);
+
+
+  }
+
+
+    function updateNewSignInStatus(isSignedIn) {
+      if(isSignedIn){
+
+        callSheetsApi();
+      }
+    }
+
+
+  function initClient() {
+    // Initialize the client with API key and People API, and initialize OAuth with an
+    // OAuth 2.0 client ID and scopes (space delimited string) to request access.
+
+    gapi.client.init({
+        apiKey: 'AIzaSyA-WvZEBUlXKj6_MnCzmJDaeFM5eqEB16Q',
+        discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/webmasters/v3/rest", "https://sheets.googleapis.com/$discovery/rest?version=v4"],
+        clientId: '597190025918-p7ve2v1sot7vp3t80v3qcv614p7usgb8.apps.googleusercontent.com',
+        scope: "https://www.googleapis.com/auth/webmasters https://www.googleapis.com/auth/spreadsheets",
+        immediate: true
+    }).then(function () {
+
+    });
+  }
+
+  function makeApiCall(source){
+    callSheetsApi(source)
+    }
+
+
+  function callSheetsApi(lime_source){
+    var params;
+    var date = new Date();
+
+    var dd = String(date.getDate()).padStart(2, '0');
+    var mm = String(date.getMonth()+1).padStart(2, '0');
+    var yyyy = date.getFullYear();
+    date = date.toString();
+    date = date.split(" ");
+    var time = date[4];
+    date = date[1] + " " + date[2] + ", " + date[3];
+
+    // date = mm + '/' + dd + '/' + yyyy + " " + date;
+
+    // console.log(date.toString());
+
+    if(lime_source == 'lime') {
+
+      params = {
+        key: 'AIzaSyA-WvZEBUlXKj6_MnCzmJDaeFM5eqEB16Q',
+        // discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/webmasters/v3/rest", "https://sheets.googleapis.com/$discovery/rest?version=v4"],
+        // The ID of the spreadsheet to update.
+        spreadsheetId: '1F_FlzVOWfQN2_jNnf7VY904je_5KDeAKD15TNNEgXQw',  // TODO: Update placeholder value.
+
+        // The A1 notation of a range to search for a logical table of data.
+        // Values will be appended after the last row of the table.
+        range: 'Sheet2!A1:G1',  // TODO: Update placeholder value.
+
+        // How the input data should be interpreted.
+        valueInputOption: 'USER_ENTERED',  // TODO: Update placeholder value.
+
+        // How the input data should be inserted.
+        insertDataOption: 'INSERT_ROWS',  // TODO: Update placeholder value.
+      };
+    }
+    else {
+      params = {
+        key: 'AIzaSyA-WvZEBUlXKj6_MnCzmJDaeFM5eqEB16Q',
+        // discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/webmasters/v3/rest", "https://sheets.googleapis.com/$discovery/rest?version=v4"],
+        // The ID of the spreadsheet to update.
+        spreadsheetId: '1F_FlzVOWfQN2_jNnf7VY904je_5KDeAKD15TNNEgXQw',  // TODO: Update placeholder value.
+
+        // The A1 notation of a range to search for a logical table of data.
+        // Values will be appended after the last row of the table.
+        range: 'Sheet1!A1:J1',  // TODO: Update placeholder value.
+
+        // How the input data should be interpreted.
+        valueInputOption: 'USER_ENTERED',  // TODO: Update placeholder value.
+
+        // How the input data should be inserted.
+        insertDataOption: 'INSERT_ROWS',  // TODO: Update placeholder value.
+      };
+
+    }
+
+    var source = document.getElementById("exposure-source").value;
+    var sampler = document.getElementById("sampler").value;
+    var store_name = document.getElementById("store-name").value;
+    var store_address = document.getElementById("store-address").value;
+    var company;
+    var insta_who;
+    var fb_who;
+    var other;
+    var in_store
+
+
+
+    var select = document.getElementById('exposure-source');
+    var select_value = select.value;
+
+    if(select_value == 'facebook') {
+      fb_who = document.getElementById("fb-name-of-person").value;
+      // who = document.getElementById("who-was-it").value;
+      insta_who = 'N/A';
+      company = 'N/A';
+      other = 'N/A';
+    }
+    else if(select_value == 'instagram') {
+      insta_who = document.getElementById("insta-person").value;
+      // who = document.getElementById("who-was-it").value;
+      fb_who = 'N/A';
+      company = 'N/A';
+      other = 'N/A';
+    }
+    else if(select_value == 'tech-company') {
+      fb_who = 'N/A';
+      insta_who = 'N/A';
+      other = 'N/A';
+      company = document.getElementById("tech-company").value;
+    }
+    else if(select_value == 'friend') {
+      fb_who = 'N/A';
+      insta_who = 'N/A';
+      company = 'N/A';
+      other = 'N/A';
+    }
+    else if(select_value == 'in-store') {
+      other = 'N/A';
+      fb_who = 'N/A';
+      insta_who = 'N/A';
+      company = 'N/A';
+    }
+    else if(select_value == 'other') {
+      other = document.getElementById("other-option").value;
+      fb_who = 'N/A';
+      insta_who = 'N/A';
+      company = 'N/A';
+    }
+
+    var valueRangeBody;
+
+    if(lime_source == 'lime') {
+      var lime_value = document.getElementById("myRange").value;
+      var second_lime_val = "N/A";
+      if(lime_value <= 6) {
+        second_lime_val = document.getElementById("myRange-second").value;
+      }
+      valueRangeBody = {
+        // TODO: Add desired properties to the request body.
+
+        "values":
+        [
+          [
+            sampler,
+            store_name,
+            store_address,
+            lime_value,
+            second_lime_val,
+            date,
+            time
+          ]
+        ]
+      };
+    }
+    else {
+      console.log(time);
+      valueRangeBody = {
+        // TODO: Add desired properties to the request body.
+
+        "values":
+        [
+          [
+            sampler,
+            store_name,
+            store_address,
+            source,
+            insta_who,
+            fb_who,
+            company,
+            other,
+            date,
+            time
+          ]
+        ]
+      };
+    }
+
+    initClient();
+
+    var request = gapi.client.sheets.spreadsheets.values.append(params, valueRangeBody,);
+
+    request.then(function(response) {
+      // TODO: Change code below to process the `response` object:
+
+      console.log(response.status);
+      setTimeout(manage_loader.bind(null, lime_source), 1000);
+
+    }, function(reason) {
+      console.error('error: ' + reason.result.error.message);
+      alert("ERROR: Please double check the following: 1. Pop-up blocker is disabled.    2. You are logged into a gmail account    OR    Contact Brad McGregor at (801) 358-0850");
+    });
+  }
+
+
+  function manage_loader(source, response) {
+
+    if(source == 'lime') {
+      var end_load;
+      end_load = document.getElementById("lime-load-cover");
+      end_load.style.opacity = "0";
+
+      document.getElementById('lime-value').innerHTML = 5;
+      document.getElementById('myRange').value = 5;
+      document.getElementById('second-lime-value').innerHTML = 5;
+      document.getElementById('myRange-second').value = 5;
+      document.getElementById("slidecontainer-second").style.display="block";
+    }
+    else {
+      var end_form_load;
+      var drop_down = document.getElementById("exposure-source");
+      end_form_load = document.getElementById("form-loader-container");
+      end_form_load.style.opacity = "0";
+      drop_down.selectedIndex = 0;
+      hide_all();
+    }
+
+  }
+
+</script>
+<script async defer src="https://apis.google.com/js/api.js"
+  onload="this.onload=function(){};handleClientLoad()"
+  onreadystatechange="if (this.readyState === 'complete') this.onload()">
+
+</script>
+
+<style>
+span {
+  text-align: center;
+}
+body {
+  font-size: 100px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+h1 {
+  text-align: center;
+}
+input {
+  width: 100%;
+  height: 75px;
+  border-radius: 18px;
+}
+input[type="text"]
+{
+    font-size:36px;
+    text-align: center;
+    background: lightgray;
+    color: gray;
+}
+button {
+  height: 55px;
+  width: 25%;
+  font-size: 36px;
+}
+optgroup {
+  font-size: 36px;
+}
+option {
+  font-size: 36px;
+}
+select {
+  height: 75px;
+  width: 100%;
+  font-size: 36px;
+  text-align-last: center;
+  border
+}
+.flx-col {
+  display: flex;
+  flex-direction: column;
+}
+
+#fb-name-of-person {
+  display: none;
+}
+#insta-person {
+  display: none;
+}
+#tech-company {
+  display: none;
+}
+#other-option {
+  display: none;
+}
+#who-text {
+  display: none;
+}
+#which-company-text {
+  display: none;
+}
+.flx-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#who {
+  width: fit-content;
+}
+
+#button-container {
+  width: 100%;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  display: none;
+  margin-bottom: 100px;
+}
+
+.input-container {
+  margin-top: 75px;
+  margin-bottom: 50px;
+  text-align: center;
+
+}
+input:focus::-webkit-input-placeholder {
+  opacity: 0;
+}
+.input-container .white-background {
+  background: white;
+}
+.not-seen {
+  display: none;
+}
+</style>
+<style>
+.slidecontainer {
+  width: 100%; /* Width of the outside container */
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 60px; /* Specified height */
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+#myRange::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 75px; /* Set a specific slider handle width */
+  height: 75px; /* Slider handle height */
+  background: url('http://aux.iconspalace.com/uploads/2169275612085476925.png'); /* Green background */
+  background-size: contain;
+  cursor: pointer; /* Cursor on hover */
+}
+
+#myRange::-moz-range-thumb {
+  width: 75px; /* Set a specific slider handle width */
+  height: 75px; /* Slider handle height */
+  background: #555555; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+#myRange-second::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 75px; /* Set a specific slider handle width */
+  height: 75px; /* Slider handle height */
+  background: url('http://aux.iconspalace.com/uploads/2169275612085476925.png'); /* Green background */
+  background-size: contain;
+  cursor: pointer; /* Cursor on hover */
+}
+
+#myRange-second::-moz-range-thumb {
+  width: 75px; /* Set a specific slider handle width */
+  height: 75px; /* Slider handle height */
+  background: #555555; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+#demo, #p-demo {
+  font-size: 24px;
+}
+#button-container-lime {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 75px;
+  border-bottom: 5px solid red;
+}
+#lime-value {
+  width: 100%;
+  text-align: center;
+}
+#lime-scale-container {
+  position: relative;
+}
+.load-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  max-width: 1500px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: white;
+  visibility: visible;
+  opacity: 0;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+.loader {
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 2px solid #fe0014;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  margin-bottom: 150px;
+}
+/* Safari */
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#form-container {
+  position: relative;
+}
+#slidecontainer-second {
+    display: block;
+    margin-top: 100px;
+}
+#second-lime-value {
+  display: flex;
+  justify-content: center;
+}
+.scale-markers {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+.min {
+  float: left;
+  font-size: 36px;
+}
+.max {
+  float: right;
+  font-size: 36px;
+}
+.slider-title {
+  font-size: 50px;
+}
+</style>
+
+
+<script>
+function lime_submission() {
+
+}
+</script>
+
+
+
+<script>
+  var slider = document.getElementById("myRange");
+  var second_slider = document.getElementById("myRange-second");
+  var second_output = document.getElementById("second-lime-value");
+  var output = document.getElementById("lime-value");
+  output.innerHTML = slider.value; // Display the default slider value
+  second_output.innerHTML = second_slider.value; // Display the default slider value
+
+  // Update the current slider value (each time you drag the slider handle)
+  slider.oninput = function() {
+    var new_value = slider.value;
+    output.innerHTML = new_value;
+  }
+  second_slider.oninput = function() {
+    var new_value = second_slider.value;
+    second_output.innerHTML = new_value;
+  }
+</script>
